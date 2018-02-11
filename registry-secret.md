@@ -1,6 +1,6 @@
 # Introduction
 
-We need a secret to allow openshift to push images to private registry. In effect, this is a base64 encoded docker config.json.
+We need a secret to allow openshift to push images to a private registry. In effect, this is a base64 encoded docker config.json.
 
 The process is described [here](https://docs.openshift.com/container-platform/3.6/dev_guide/builds/build_inputs.html#using-docker-credentials-for-private-registries).
 
@@ -25,6 +25,7 @@ Assuming you are already logged into the required openshift project:
 ```
 $ oc secrets new docker-io-somewhere ~/.docker/config.json
 $ oc secrets link builder docker-io-somewhere
+$ oc export secret docker-io-somewhere # take alook at your secret; its base64 encoded!
 ```
 
 The secret should now exist and the openshift builder can use it. You can check the secret via the command above.
