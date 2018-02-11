@@ -38,16 +38,15 @@ src=$SOURCE_REPOSITORY
 BUILD_DIR=$(mktemp --directory)
 
 ref=''
+branch=master
 [ ! -z "${SOURCE_REF}" ] && {
   ref="-b ${SOURCE_REF}"
+  branch="${SOURCE_REF}"
 }
 
-ref="${SOURCE_REF}"
-[ -z "${ref}" ] && ref=master
-
-echo "Git cloning ${src} (ref=${ref})."
-git clone ${SOURCE_REPOSITORY} ${BUILD_DIR} || {
-  echo "Error trying to fetch git source ${src} (ref=${ref})."
+echo "Git cloning ${src} (ref=${branch})."
+git clone ${ref} ${SOURCE_REPOSITORY} ${BUILD_DIR} || {
+  echo "Error trying to fetch git source ${src} (ref=${branch})."
   exit 1
 }
 
