@@ -1,0 +1,35 @@
+apiVersion: v1
+  kind: BuildConfig
+metadata:
+  name: nginx-gateway
+spec:
+  failedBuildsHistoryLimit: 10
+  successfulBuildsHistoryLimit: 10
+  runPolicy: Serial
+  source: 
+    git:
+      uri: https://github.com/spicysomtam/openshift-custom-docker-builder
+    sourceSecret:
+      name: someone-github
+  strategy: 
+    type: Custom
+    customStrategy:
+      from:
+        kind: DockerImage
+        name: docker.io/spicysomtam/openshift-custom-docker-builder:latest
+      env:
+      - name: OUTPUT_IMAGE
+        value: docker.io/somewhere/nginx-gateway:build
+      - name: SUBDIR
+        value: nginx
+#       True on script debugging so you can see what is going on; set to true for debug.
+      - name: DEBUG
+        value: 'false'
+#       Set to number of secs to keep container alive at the end; useful for debugging in origin, etc.
+      - name: SLEEP_AT_END
+        value: ''
+      exposeDockerSocket: true
+      forcePull: true
+  output:
+    pushSecret:
+      name: docker-io-somewhere
