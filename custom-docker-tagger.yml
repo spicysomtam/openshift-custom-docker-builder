@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: custom-docker-tagger
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: ${BUILD_CONFIG}
+  spec:
+    failedBuildsHistoryLimit: 10
+    successfulBuildsHistoryLimit: 10
+    runPolicy: Serial
+    strategy: 
+      type: Custom
+      customStrategy:
+        from:
+          kind: DockerImage
+          name: ${TAGGER_IMAGE}
+        env:
+        - name: SOURCE_IMAGE
+          value: ${SOURCE_IMAGE}
+        - name: TARGET_IMAGE
+          value: ${TARGET_IMAGE}
+#         Turn on script debugging so you can see what is going on; set to true for debug.
+        - name: DEBUG
+          value: '${DEBUG}'
+#         Set to number of secs to keep container alive at the end; useful for debugging in origin, etc.
+        - name: SLEEP_AT_END
+          value: '${SLEEP_AT_END}'
+        exposeDockerSocket: true
+        forcePull: true
+    output:
+      pushSecret:
+        name: ${PUSH_SECRET}
+parameters:
+- description: Build config name
+  name: BUILD_CONFIG
+  value: 'custom-docker-tagger'
+- description: Custom docker tagger image
+  name: TAGGER_IMAGE
+  value: 'spicysomtam/openshift-custom-docker-tagger'
+- description: Source image
+  name: SOURCE_IMAGE
+  value: ''
+- description: Target image
+  name: TARGET_IMAGE
+  value: ''
+- description: Output image push secret
+  name: PUSH_SECRET
+  value: 'docker-registry'
+- description: Debugging flag
+  name: DEBUG
+  value: 'false'
+- description: Sleep duration in seconds at end of build for debugging, etc
+  name: SLEEP_AT_END
+  value: ''
