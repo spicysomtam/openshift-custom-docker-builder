@@ -29,13 +29,13 @@ $ oc edit bc/nginx-gateway # If you want to adapt it on the fly; eg switch on DE
 
 # Image retagging
 
-Say you want to retag images on a remote registry. Simple example is image promotion between environments like `dev` to `qa`, or a commit hash to a version release. You could pull an image with tag `commit-id` or `dev`, retag it to a `1.0` or `qa`, then push it back up to the remote registry. This is what this image retagger does.
+Typically your Openshift Jenkins CI/CD pipeline will build your app docker images (for Openshift) and then push them to an external docker registry where they are available globally, outside a single Openship cluster. Lets say they get tagged as `latest`; these are the images for dev, which will need testing, and then at some point will be promoted to `qa`, etc, and then deployed to another openshift project, or even another openshift cluster. Thus you have a need to be able to retag images on a remote registry, from a CI/CD pipeline running on the Openshift Jenkins. This is what this custom build config allows you to do.
 
-Consider the situation where you have multiple openshift clusters that are distributed geographically in data centers all over the country. How do you do image promotion between the clusters (and projects within the clusters)? The simple answer is to use an external docker registry (jfrog, docker, etc), that all clusters can pull images from. Then you use this image and build config to do the image pull, retag, and push, all within an Openshift custom build config.
+Also consider the situation where you have multiple openshift clusters that are distributed geographically in data centers all over the country. How do you do image promotion between the clusters (and projects within the clusters)? The simple answer is to use an external docker registry (jfrog, docker, etc), that all clusters can pull images from, and this build config to do the image retagging.
 
 The image build lives under the `tagger-image` directory. The build config for it is `custom-docker-tagger.yml`.
 
-Most private registries allow pulls without credentials, but pushes need to be authenicated, so you can compose the push secret as described above.
+Most private registries allow pulls without credentials, but pushes need to be authenticated, so you can create the push secret as described above.
 
 You load the build config as follows:
 ```
@@ -48,3 +48,5 @@ Then you do you image pulling and pushing as follows; the `DEBUG` lets you see w
 ```
 $ oc start-build -e SOURCE_IMAGE=myregistry.com:5000/someimage:latest -e TARGET_IMAGE=myregistry.com:5000/someimage:qa -e DEBUG=true custom-docker-tagger
 ```
+
+Thus the same build config can be used repeatedly for different images/tags; no need for a build config for every image.
