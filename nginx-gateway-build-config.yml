@@ -18,6 +18,8 @@ spec:
         kind: DockerImage
         name: docker.io/spicysomtam/openshift-custom-docker-builder:latest
       env:
+      - name: BUILD_LOGLEVEL
+        value: '0'
       - name: OUTPUT_IMAGE
         value: docker.io/somewhere/nginx-gateway:build
       - name: SUBDIR

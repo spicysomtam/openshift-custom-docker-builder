@@ -18,6 +18,8 @@ objects:
           kind: DockerImage
           name: ${TAGGER_IMAGE}
         env:
+        - name: BUILD_LOGLEVEL
+          value: '0'
         - name: SOURCE_IMAGE
           value: ${SOURCE_IMAGE}
         - name: TARGET_IMAGE
