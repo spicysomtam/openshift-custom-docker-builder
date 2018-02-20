@@ -4,7 +4,7 @@ A complete openshift custom build config to build docker images from git source 
 
 Also included is a custom build config to retag images on a remote docker registry; that is, it allows you to promote images between environments, retag images between commit ids and versions, or however you do your image tagging. So image pull, retag, and push back.
 
-Both of these can be integrated in Jenkins or whatever CI/CD you use (Openshift comes with a Jenkins setup out of the box). Thus you can build docker images in Openshift, and retag them via a remote registry (the internal Openshift docker registry isn't intended for this and is only really there to support the cluster). 
+Both of these can be integrated in Jenkins or whatever CI/CD you use (Openshift comes with a Jenkins setup out of the box). Thus you can build docker images in Openshift, and retag them via a remote registry (the internal Openshift docker registry isn't intended for this and is only really there to support the cluster).
 
 # Example image build
 
@@ -27,7 +27,7 @@ $ oc start-build nginx-gateway
 $ oc edit bc/nginx-gateway # If you want to adapt it on the fly; eg switch on DEBUG, etc
 ```
 
-# Example image retag.
+# Example image retag
 
 Say you want to retag images on a remote registry. Simple example is image promotion between environments like `dev` to `qa`, or a commit hash to a version release. You could pull an image with tag `commit-id` or `dev`, retag it to a `1.0` or `qa`, then push it back up to the remote registry. This is what this image retagger does.
 
