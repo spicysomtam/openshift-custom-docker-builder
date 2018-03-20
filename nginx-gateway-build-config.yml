@@ -27,6 +27,12 @@ spec:
 #       True on script debugging so you can see what is going on; set to true for debug.
       - name: DEBUG
         value: 'false'
+#       A hash (`#`) delimited list of docker build args. eg `BUILDARGS=VERSION=1.0#SOMETHING=foo#ANOTHER=bar`.
+      - name: BUILDARGS
+        value: ''
+#       Git commit hash
+      - name: COMMIT
+        value: ''
 #       Set to number of secs to keep container alive at the end; useful for debugging in origin, etc.
       - name: SLEEP_AT_END
         value: ''
