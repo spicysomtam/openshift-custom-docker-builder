@@ -1,7 +1,7 @@
 
-IMAGE_NAME = bamtech/custom-logging-test
+IMAGE_NAME = spicysomtam/openshift-custom-logging-test
 TAG = latest
-REGISTRY = razcp-docker.artifactory.bamtech.co:8080
+REGISTRY = docker.io
 
 build:
 	docker build -t $(IMAGE_NAME):$(TAG) .

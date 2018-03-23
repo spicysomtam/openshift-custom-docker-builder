@@ -27,4 +27,4 @@ objects:
 parameters:
 - description: Custom logging test image
   name: BUILDER_IMAGE
-  value: 'razcp-docker.artifactory.bamtech.co:8080/bamtech/custom-logging-test'
+  value: 'docker.io/spicysomtam/openshift-custom-logging-test'
