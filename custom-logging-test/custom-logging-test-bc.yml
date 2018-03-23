@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: custom-logging-test
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: custom-logging-test
+  spec:
+    failedBuildsHistoryLimit: 10
+    successfulBuildsHistoryLimit: 10
+    runPolicy: Serial
+    strategy: 
+      type: Custom
+      customStrategy:
+        from:
+          kind: DockerImage
+          name: ${BUILDER_IMAGE}
+        env:
+        - name: BUILD_LOGLEVEL
+          value: "0"
+        - name: WAITSECS
+          value: "600"
+        exposeDockerSocket: true
+        forcePull: true
+parameters:
+- description: Custom logging test image
+  name: BUILDER_IMAGE
+  value: 'razcp-docker.artifactory.bamtech.co:8080/bamtech/custom-logging-test'
